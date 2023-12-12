@@ -1,133 +1,37 @@
-#!/usr/bin/env python3
-"""
-A module that contains functions for finding prime factors of a natural number
-using Fermat's factorization method and the Miller-Rabin primality test.
-"""
-
-import random
-import math
+#!/usr/bin/python3
+"""  function to check if a number is prime or not """
+import sys
 
 
-def find_prime_factors(number):
-    """Return a list of prime factors of a natural number.
 
-    Args:
-        number (int): The natural number to be factorized.
-
-    Returns:
-        list: A sorted list of prime factors of the number.
-
-    Raises:
-        ValueError: If the number is not a natural number.
-    """
-    if number < 0:
-        raise ValueError(f"{number} is not a natural number")
-
-    prime_factors = []
-    if number % 2 == 0:
-        number = number // 2
-        prime_factors.append(2)
-    while number % 2 == 0:
-        number = number // 2
-        prime_factors.append(2)
-    if number == 1:
-        return prime_factors
-    if is_prime(number):
-        prime_factors.append(number)
-        return prime_factors
-
-    a = math.ceil(math.sqrt(number))
-    b = math.floor(math.sqrt(number))
-    while True:
-        c = a * a - b * b
-        if c == number:
-            if is_prime(a - b):
-                prime_factors.append(a - b)
-            else:
-                prime_factors.extend(find_prime_factors(a - b))
-            if is_prime(a + b):
-                prime_factors.append(a + b)
-            else:
-                prime_factors.extend(find_prime_factors(a + b))
-            break
-        elif c < number:
-            a += 1
-        else:
-            b -= 1
-    return sorted(prime_factors)
-
-
-def is_prime(number):
-    """if a natural number is prime using the Miller-Rabin primality test.
-
-    Args:
-        number (int): The natural number to be checked.
-
-    Returns:
-        bool: True if the number is prime, False otherwise.
-
-    Raises:
-        ValueError: If the number is not a natural number.
-    """
-    if number < 0:
-        raise ValueError(f"{number} is not a natural number")
-
-    if number == 2 or number == 3:
-        return True
-    if number < 2 or number % 2 == 0:
-        return False
-    r = 0
-    d = number - 1
-    while d % 2 == 0:
-        r += 1
-        d = d // 2
-
-    a = random.randint(2, number - 2)
-    x = pow(a, d, number)
-    if x == 1 or x == number - 1:
-        return True
-    for _ in range(r - 1):
-        x = pow(x, 2, number)
-        if x == 1:
-            return False
-        if x == number - 1:
-            return True
+def is_prime(n):
+  if n == 2:
+    return True
+  if n % 2 == 0:
     return False
+  for i in range(3, int(n**0.5) + 1, 2):
+    if n % i == 0:
+      return False
+  return True
 
-
-def main(filename):
-    """Read a natural number from a file and print its prime factors.
-
-    Args:
-        filename (str): The name of the file that contains the number.
-
-    Prints:
-        str: A string that shows the number and its prime factors.
-    """
-    try:
-        with open(filename, "r") as f:
-            line = f.readline()
-    except FileNotFoundError:
-        print("File not found")
-        return
-    if not line:
-        print("File is empty")
-        return
-    try:
-        number = int(line.strip())
-    except ValueError:
-        print("Invalid input")
-        return
-    if number == 0:
-        print("0 cannot be factorized")
-        return
-    if number < 0:
-        print(f"{number} is not a natural number")
-        return
-    prime_factors = find_prime_factors(number)
-    print(f"{number} = {prime_factors[0]} * {prime_factors[1]}")
-
-
-if __name__ == "__main__":
-    import sys
-    main(sys.argv[1])
+""" function to find the prime factors of a number """
+def fc():
+  try:
+    revfile = sys.argv[1]
+    with open(revfile) as f:
+      for revnumber in f:
+        revnumber = int(revnumber)
+        if revnumber == 2:
+          print("{}={}*{}".format(revnumber, revnumber, 1))
+          continue
+        for i in range(2, int(revnumber**0.5) + 1):
+          if revnumber % i == 0 and is_prime(i):
+            q = revnumber // i
+            if is_prime(q):
+              print("{}={}*{}".format(revnumber, q, i))
+              break
+        else:
+          print("{}={}*{}".format(revnumber, revnumber, 1))
+  except (IndexError, FileNotFoundError):
+    print("Invalid file")
+fc()
