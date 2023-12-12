@@ -3,7 +3,6 @@
 import sys
 
 
-
 def is_prime(n):
   if n == 2:
     return True
@@ -14,9 +13,13 @@ def is_prime(n):
       return False
   return True
 
-""" function to find the prime factors of a number """
+ """ function to find the prime factors of a number """
+
+
 def fc():
-  try:
+
+
+    try:
     revfile = sys.argv[1]
     with open(revfile) as f:
       for revnumber in f:
@@ -34,4 +37,6 @@ def fc():
           print("{}={}*{}".format(revnumber, revnumber, 1))
   except (IndexError, FileNotFoundError):
     print("Invalid file")
+
+
 fc()
