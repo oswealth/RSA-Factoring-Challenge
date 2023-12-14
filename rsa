@@ -4,39 +4,37 @@ import sys
 
 
 def is_prime(n):
-  if n == 2:
+    if n == 2:
+        return True
+    if n % 2 == 0:
+        return False
+    for i in range(3, int(n**0.5) + 1, 2):
+        if n % i == 0:
+            return False
     return True
-  if n % 2 == 0:
-    return False
-  for i in range(3, int(n**0.5) + 1, 2):
-    if n % i == 0:
-      return False
-  return True
 
- """ function to find the prime factors of a number """
+# function to find the prime factors of a number
 
 
 def fc():
-
-
     try:
-    revfile = sys.argv[1]
-    with open(revfile) as f:
-      for revnumber in f:
-        revnumber = int(revnumber)
-        if revnumber == 2:
-          print("{}={}*{}".format(revnumber, revnumber, 1))
-          continue
-        for i in range(2, int(revnumber**0.5) + 1):
-          if revnumber % i == 0 and is_prime(i):
-            q = revnumber // i
-            if is_prime(q):
-              print("{}={}*{}".format(revnumber, q, i))
-              break
-        else:
-          print("{}={}*{}".format(revnumber, revnumber, 1))
-  except (IndexError, FileNotFoundError):
-    print("Invalid file")
+        revfile = sys.argv[1]
+        with open(revfile) as f:
+            for revnumber in f:
+                revnumber = int(revnumber)
+                if revnumber == 2:
+                    print("{}={}*{}".format(revnumber, revnumber, 1))
+                    continue
+                for i in range(2, int(revnumber**0.5) + 1):
+                    if revnumber % i == 0 and is_prime(i):
+                        q = revnumber // i
+                        if is_prime(q):
+                            print("{}={}*{}".format(revnumber, q, i))
+                            break
+                else:
+                    print("{}={}*{}".format(revnumber, revnumber, 1))
+    except (IndexError, FileNotFoundError):
+        print("Invalid file")
 
 
 fc()
