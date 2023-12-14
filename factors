@@ -3,8 +3,23 @@
 
 FILE = $1
 
-while read NUM
-do
-factors = ($(factor $NUM))
-echo "$NUM=$(($NUM/${factors[1]}))*${factors[1]}"
-done < $FILE
+if [-f "$FILE"] && [-r "$FILE"]; then
+	while read NUM
+	do
+		factors = ()
+		for ((i=$(echo "sqrt($NUM)" | bc); i>=2; i--))
+		do
+			if ((NUM%i == 0)); then
+				factors += ($i $((NUM/i)))
+				break
+			fi
+		done
+		if [ ${#factors[@]} -eq 0 ]; then
+			echo "$NUM=$NUM*1"
+		else
+			echo "$NUM=${factors[1]}*${factors[0]}"
+		fi
+	done < $FILE
+else
+	echo "Invalid file: $FILE"
+fi
