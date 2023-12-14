@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 # read from file given as argv[1] ($1) and print factors for each num in file
 
-FILE = $1
+FILE=$1
 
 if [ -f "$FILE" ] && [ -r "$FILE" ]; then
   while read NUM
   do
-    factors = ()
+    factors=()
     for ((i=$(echo "sqrt($NUM)" | bc); i>=2; i--))
     do
       if ((NUM%i == 0)); then
