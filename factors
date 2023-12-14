@@ -1,25 +1,10 @@
 #!/usr/bin/env bash
 # read from file given as argv[1] ($1) and print factors for each num in file
 
-FILE=$1
+FILE = $1
 
-if [ -f "$FILE" ] && [ -r "$FILE" ]; then
-  while read NUM
-  do
-    factors=()
-    for ((i=$(echo "sqrt($NUM)" | bc); i>=2; i--))
-    do
-      if ((NUM%i == 0)); then
-        factors+=($i $((NUM/i)))
-        break
-      fi
-    done
-    if [ ${#factors[@]} -eq 0 ]; then
-      echo "$NUM=$NUM*1"
-    else
-      echo "$NUM=${factors[1]}*${factors[0]}"
-    fi
-  done < $FILE
-else
-  echo "Invalid file: $FILE"
-fi
+while read NUM
+do
+factors = ($(factor $NUM))
+echo "$NUM=$(($NUM/${factors[1]}))*${factors[1]}"
+done < $FILE
